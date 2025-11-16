@@ -1,6 +1,7 @@
 import asyncio
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 from openai import AsyncOpenAI
 
 from agents import (
@@ -12,13 +13,13 @@ from agents import (
     set_tracing_disabled,
 )
 
-BASE_URL = os.getenv("EXAMPLE_BASE_URL") or ""
-API_KEY = os.getenv("EXAMPLE_API_KEY") or ""
-MODEL_NAME = os.getenv("EXAMPLE_MODEL_NAME") or ""
+BASE_URL = os.getenv("GEMINI_BASE_URL") or ""
+API_KEY = os.getenv("GEMINI_API_KEY") or ""
+MODEL_NAME = os.getenv("GEMINI_MODEL_NAME") or ""
 
 if not BASE_URL or not API_KEY or not MODEL_NAME:
     raise ValueError(
-        "Please set EXAMPLE_BASE_URL, EXAMPLE_API_KEY, EXAMPLE_MODEL_NAME via env var or code."
+        "Please set GEMINI_BASE_URL, GEMINI_API_KEY, GEMINI_MODEL_NAME via env var or code."
     )
 
 
@@ -41,26 +42,26 @@ set_default_openai_api("chat_completions")
 set_tracing_disabled(disabled=True)
 
 
-gmail_mcp_server = {
-  "mcpServers": {
-    "gmail": {
-      "command": "npx",
-      "args": [
-        "@gongrzhe/server-gmail-autoauth-mcp"
-      ]
-    }
-  }
-}
+# gmail_mcp_server = {
+#   "mcpServers": {
+#     "gmail": {
+#       "command": "npx",
+#       "args": [
+#         "@gongrzhe/server-gmail-autoauth-mcp"
+#       ]
+#     }
+#   }
+# }
 
 async def main():
     agent = Agent(
         name="Assistant",
-        instructions="You only respond in haikus.",
+        instructions="You are helpful assistant",
         model=MODEL_NAME,
-        mcp_servers=[gmail_mcp_server]
+        # mcp_servers=[gmail_mcp_server]
     )
-
-    result = await Runner.run(agent, "What's the weather in Tokyo?")
+    user_input = input("User: ")
+    result = await Runner.run(agent, user_input)
     print(result.final_output)
 
 
