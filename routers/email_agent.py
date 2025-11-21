@@ -42,23 +42,23 @@ set_default_openai_api("chat_completions")
 set_tracing_disabled(disabled=True)
 
 
-# gmail_mcp_server = {
-#   "mcpServers": {
-#     "gmail": {
-#       "command": "npx",
-#       "args": [
-#         "@gongrzhe/server-gmail-autoauth-mcp"
-#       ]
-#     }
-#   }
-# }
+gmail_mcp_server = {
+  "mcpServers": {
+    "gmail": {
+      "command": "npx",
+      "args": [
+        "@gongrzhe/server-gmail-autoauth-mcp"
+      ]
+    }
+  }
+}
 
 async def main():
     agent = Agent(
         name="Assistant",
         instructions="You are helpful assistant",
         model=MODEL_NAME,
-        # mcp_servers=[gmail_mcp_server]
+        mcp_servers=[gmail_mcp_server]
     )
     user_input = input("User: ")
     result = await Runner.run(agent, user_input)
